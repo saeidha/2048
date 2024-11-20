@@ -508,6 +508,7 @@ hr {
   animation-fill-mode: backwards; }
 
 .above-game:after {
+  padding-top: 20px;
   content: "";
   display: block;
   clear: both; }

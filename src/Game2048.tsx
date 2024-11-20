@@ -42,7 +42,7 @@ const Game2048: React.FC = () => {
           <div className="best-container">0</div>
         </div>
       </div>
-
+<br/>
       <div className="above-game">
         <p className="game-intro">
           Join the numbers and get to the <strong>2048 tile!</strong>

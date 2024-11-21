@@ -137,3 +137,13 @@ HTMLActuator.prototype.clearMessage = function () {
   this.messageContainer.classList.remove("game-won");
   this.messageContainer.classList.remove("game-over");
 };
+
+HTMLActuator.prototype.connectWallet = function () {
+  var type    = "connect-wallet";
+  var message = "Please connect your wallet to continue.";
+
+  this.messageContainer.classList.add(type);
+  this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+};
+
+window.HTMLActuator = HTMLActuator;

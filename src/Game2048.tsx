@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./2048/style/main.css"; // Adjust the path
-import { useAccount } from 'wagmi'
+import { useAccount } from 'wagmi';
 
 interface Game2048Props {
   doPay: () => void;
@@ -9,7 +9,10 @@ interface Game2048Props {
 }
 
 const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
-  const account = useAccount()
+  const account = useAccount();
+  const [scriptsLoaded, setScriptsLoaded] = useState(false);
+  const scriptElements: HTMLScriptElement[] = [];
+
   useEffect(() => {
     // Load game scripts dynamically
     const scripts = [
@@ -26,38 +29,58 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
     ];
 
     const loadScripts = scripts.map((src) => {
-      const script = document.createElement("script");
-      script.src = `./2048/${src}`; // Adjust path to match your public folder
-      script.async = true;
-      document.body.appendChild(script);
-      return script;
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = `./2048/${src}`; // Adjust path to match your public folder
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+        scriptElements.push(script);
+      });
+    });
+
+    Promise.all(loadScripts).then(() => {
+      setScriptsLoaded(true);
+      console.log("All scripts loaded");
+
+      if (account.status !== 'connected') {
+      const actuator = new window.HTMLActuator();
+      actuator.connectWallet();
+      }
+
+
+    }).catch((error) => {
+      console.error("Error loading scripts", error);
     });
 
     return () => {
       // Cleanup scripts on unmount
-      loadScripts.forEach((script) => document.body.removeChild(script));
+      scriptElements.forEach((script) => {
+        document.body.removeChild(script);
+      });
     };
   }, []);
 
-
-const handleNewGame = () => {
-  if (account.status !== 'connected') {
-    // handleReload();
-    doConnectWallet();
-  }else{
-    // keyboardManager.restart({ preventDefault: () => {} });
-    doPay();
-    const restartButton = document.getElementById("restart-button");
-    if (restartButton) {
-      restartButton.click();
+  const handleNewGame = () => {
+    if (account.status !== 'connected') {
+      doConnectWallet();
+      if (scriptsLoaded) {
+        const actuator = new window.HTMLActuator();
+        actuator.connectWallet();
+      }
+    } else {
+      doPay();
+      const restartButton = document.getElementById("restart-button");
+      if (restartButton) {
+        restartButton.click();
+      }
     }
-  }
-  
-};
+  };
 
   return (
     <div className="container">
-      <a className="restart-button-action" id="restart-button"  ></a>
+      <a className="restart-button-action" id="restart-button"></a>
       <div className="heading">
         <h1 className="title">Linea 2048</h1>
         <div className="scores-container">
@@ -65,12 +88,12 @@ const handleNewGame = () => {
           <div className="best-container">0</div>
         </div>
       </div>
-<br/>
+      <br/>
       <div className="above-game">
         <p className="game-intro">
           Join the numbers and get to the <strong>Linea 2048 tile!</strong>
         </p>
-          <a className="restart-button" onClick={handleNewGame}>
+        <a className="restart-button" onClick={handleNewGame}>
           {account.status === 'connected' ? "New Game" : "Connect Wallet"}
         </a>
       </div>

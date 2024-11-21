@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./2048/style/main.css"; // Adjust the path
 import { useAccount } from 'wagmi'
 

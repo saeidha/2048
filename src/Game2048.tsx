@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./2048/style/main.css"; // Adjust the path
+import { useAccount } from 'wagmi'
 
+interface Game2048Props {
+  doPay: () => void;
+  doConnectWallet: () => void;
+  // newGame: () => void;
+}
 
-const Game2048: React.FC = () => {
-
+const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
+  const account = useAccount()
   useEffect(() => {
     // Load game scripts dynamically
     const scripts = [
@@ -33,6 +39,18 @@ const Game2048: React.FC = () => {
     };
   }, []);
 
+
+const handleNewGame = () => {
+  if (account.status !== 'connected') {
+    // handleReload();
+    doConnectWallet();
+  }else{
+    // keyboardManager.restart({ preventDefault: () => {} });
+    doPay();
+  }
+  
+};
+
   return (
     <div className="container">
       <div className="heading">
@@ -45,10 +63,10 @@ const Game2048: React.FC = () => {
 <br/>
       <div className="above-game">
         <p className="game-intro">
-          Join the numbers and get to the <strong>2048 tile!</strong>
+          Join the numbers and get to the <strong>Linea 2048 tile!</strong>
         </p>
-        <a className="restart-button" onClick={() => window.location.reload()}>
-          New Game
+          <a className="restart-button" onClick={handleNewGame}>
+          {account.status === 'connected' ? "New Game" : "Connect Wallet"}
         </a>
       </div>
 
@@ -57,7 +75,7 @@ const Game2048: React.FC = () => {
           <p></p>
           <div className="lower">
             <a className="keep-playing-button">Keep going</a>
-            <a className="retry-button" onClick={() => window.location.reload()}>
+            <a className="retry-button" onClick={handleNewGame}>
               Try again
             </a>
           </div>

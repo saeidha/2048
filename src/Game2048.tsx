@@ -47,12 +47,17 @@ const handleNewGame = () => {
   }else{
     // keyboardManager.restart({ preventDefault: () => {} });
     doPay();
+    const restartButton = document.getElementById("restart-button");
+    if (restartButton) {
+      restartButton.click();
+    }
   }
   
 };
 
   return (
     <div className="container">
+      <a className="restart-button-action" id="restart-button"  ></a>
       <div className="heading">
         <h1 className="title">Linea 2048</h1>
         <div className="scores-container">
@@ -75,9 +80,7 @@ const handleNewGame = () => {
           <p></p>
           <div className="lower">
             <a className="keep-playing-button">Keep going</a>
-            <a className="retry-button" onClick={handleNewGame}>
-              Try again
-            </a>
+            <a className="retry-button" onClick={handleNewGame}>Try again</a>
           </div>
         </div>
 

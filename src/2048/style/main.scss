@@ -207,7 +207,7 @@ hr {
       text-align: center;
 
       p {
-        font-size: 60px;
+        font-size: 40px;
         font-weight: bold;
         height: 60px;
         line-height: 60px;
@@ -243,7 +243,7 @@ hr {
 	}
       }
 
-      &.game-won, &.game-over {
+      &.game-won, &.game-over &.connect-wallet {
         display: block;
       }
     }

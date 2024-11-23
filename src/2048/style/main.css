@@ -173,7 +173,7 @@ hr {
     -moz-animation-fill-mode: both;
     animation-fill-mode: both; }
     .game-container .game-message p {
-      font-size: 60px;
+      font-size: 40px;
       font-weight: bold;
       height: 60px;
       line-height: 60px;
@@ -198,8 +198,9 @@ hr {
       color: #f9f6f2; }
       .game-container .game-message.game-won a.keep-playing-button {
         display: inline-block; }
-    .game-container .game-message.game-won, .game-container .game-message.game-over {
+    .game-container .game-message.game-won, .game-container .game-message.game-over, .game-container .game-message.connect-wallet  {
       display: block; }
+      
 
 .grid-container {
   position: absolute;
@@ -607,7 +608,7 @@ hr {
       -moz-animation-fill-mode: both;
       animation-fill-mode: both; }
       .game-container .game-message p {
-        font-size: 60px;
+        font-size: 40px;
         font-weight: bold;
         height: 60px;
         line-height: 60px;
@@ -632,7 +633,7 @@ hr {
         color: #f9f6f2; }
         .game-container .game-message.game-won a.keep-playing-button {
           display: inline-block; }
-      .game-container .game-message.game-won, .game-container .game-message.game-over {
+      .game-container .game-message.game-won, .game-container .game-message.game-over, .game-container .game-message.connect-wallet  {
         display: block; }
 
   .grid-container {

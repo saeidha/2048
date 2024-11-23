@@ -136,14 +136,21 @@ HTMLActuator.prototype.clearMessage = function () {
   // IE only takes one value to remove at a time.
   this.messageContainer.classList.remove("game-won");
   this.messageContainer.classList.remove("game-over");
+  this.messageContainer.classList.remove("connect-wallet");
 };
 
-HTMLActuator.prototype.connectWallet = function () {
+HTMLActuator.prototype.connectWallet = function (isConnected) {
+
+  console.log("Connected: ", isConnected);
+  if (isConnected === false) {
   var type    = "connect-wallet";
   var message = "Please connect your wallet to continue.";
 
   this.messageContainer.classList.add(type);
   this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+  }else {
+    this.messageContainer.classList.remove("connect-wallet");
+  }
 };
 
 window.HTMLActuator = HTMLActuator;

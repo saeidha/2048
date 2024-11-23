@@ -45,12 +45,6 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
       setScriptsLoaded(true);
       console.log("All scripts loaded");
 
-      if (account.status !== 'connected') {
-      const actuator = new window.HTMLActuator();
-      actuator.connectWallet();
-      }
-
-
     }).catch((error) => {
       console.error("Error loading scripts", error);
     });
@@ -64,10 +58,20 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
   }, []);
 
   useEffect(() => {
+    if (scriptsLoaded) {
+      console.log("All scripts loaded");
+      console.log("account.status: " + account.status);
+      const actuator = new window.HTMLActuator();
+      actuator.connectWallet(account.status === 'connected');
+    }
+  });
+
+  useEffect(() => {
     if (shouldPlay) {
       startNewGame();
     }
   }, [shouldPlay]);
+
   const startNewGame = () => {
     const restartButton = document.getElementById("restart-button");
     if (restartButton) {
@@ -78,10 +82,6 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
   const handleNewGame = () => {
     if (account.status !== 'connected') {
       doConnectWallet();
-      if (scriptsLoaded) {
-        const actuator = new window.HTMLActuator();
-        actuator.connectWallet();
-      }
     } else {
       doPay();
     }
@@ -112,7 +112,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
           <p></p>
           <div className="lower">
             <a className="keep-playing-button">Keep going</a>
-            <a className="retry-button" onClick={handleNewGame}>Try again</a>
+            <a className="retry-button" onClick={handleNewGame}>{account.status === 'connected' ? "New Game" : "Connect Wallet"}</a>
           </div>
         </div>
 

@@ -105,7 +105,7 @@ HTMLActuator.prototype.positionClass = function (position) {
 
 HTMLActuator.prototype.updateScore = function (score) {
   this.clearContainer(this.scoreContainer);
-
+  console.log("Score: ", this.score);
   var difference = score - this.score;
   this.score = score;
 
@@ -153,4 +153,8 @@ HTMLActuator.prototype.connectWallet = function (isConnected) {
   }
 };
 
+HTMLActuator.prototype.getScore = function () {
+  console.log("Score: ", this.score);
+  return this.score;
+};
 window.HTMLActuator = HTMLActuator;

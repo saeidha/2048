@@ -12,11 +12,6 @@ export const abi = [
                 "internalType": "uint256",
                 "name": "score",
                 "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
             }
         ],
         "name": "submitScore",

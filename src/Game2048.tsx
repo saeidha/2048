@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./2048/style/main.css"; // Adjust the path
 import { useAccount } from 'wagmi';
-
+import "./Game2048.css"; // Adjust the path
 interface Game2048Props {
+  submitScore: (score: number) => void;
   doPay: () => void;
   doConnectWallet: () => void;
   shouldPlay: boolean;
 }
 
-const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
+const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, submitScore
 }) => {
   const account = useAccount();
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
   const scriptElements: HTMLScriptElement[] = [];
-
   useEffect(() => {
     // Load game scripts dynamically
     const scripts = [
@@ -44,7 +44,6 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
     Promise.all(loadScripts).then(() => {
       setScriptsLoaded(true);
       console.log("All scripts loaded");
-
     }).catch((error) => {
       console.error("Error loading scripts", error);
     });
@@ -87,6 +86,16 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
     }
   };
 
+  const saveScore = () => {
+    if (scriptsLoaded) {
+      const textContent = document.getElementsByClassName("score-container")[0].textContent;
+      if (textContent) {
+        const score = parseInt(textContent.split("+")[0]  || "0");
+        submitScore(score);
+      }
+    }
+  }
+
   return (
     <div className="container">
       <a className="restart-button-action" id="restart-button"></a>
@@ -94,7 +103,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
         <h1 className="title">Linea 2048</h1>
         <div className="scores-container">
           <div className="score-container">0</div>
-          <div className="best-container">0</div>
+          {/* <div className="best-container">0</div> */}
         </div>
       </div>
       <br/>
@@ -128,6 +137,12 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
 
         <div className="tile-container"></div>
       </div>
+
+      <div className="before-submit-game">
+        </div>
+<div className="submit-game">
+<a onClick={saveScore}>Register your score</a>
+</div>
 
       <p className="game-explanation">
         <strong className="important">How to play:</strong> Use your{" "}

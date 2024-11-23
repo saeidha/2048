@@ -53,6 +53,11 @@ console.log("---- do connect wallet ----");
       )
     ))
   };
+
+
+  const handleSubmitScore = (score: number) => {
+
+  };
   return (
     <>
       <div>
@@ -63,7 +68,7 @@ console.log("---- do connect wallet ----");
         )}
       </div>
 
-      <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay}/>
+      <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
     </>
   )
 }

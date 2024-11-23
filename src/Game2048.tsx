@@ -5,10 +5,11 @@ import { useAccount } from 'wagmi';
 interface Game2048Props {
   doPay: () => void;
   doConnectWallet: () => void;
-  // newGame: () => void;
+  shouldPlay: boolean;
 }
 
-const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
+const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay
+}) => {
   const account = useAccount();
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
   const scriptElements: HTMLScriptElement[] = [];
@@ -62,6 +63,18 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (shouldPlay) {
+      startNewGame();
+    }
+  }, [shouldPlay]);
+  const startNewGame = () => {
+    const restartButton = document.getElementById("restart-button");
+    if (restartButton) {
+      restartButton.click();
+    }
+  }
+
   const handleNewGame = () => {
     if (account.status !== 'connected') {
       doConnectWallet();
@@ -71,10 +84,6 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet}) => {
       }
     } else {
       doPay();
-      const restartButton = document.getElementById("restart-button");
-      if (restartButton) {
-        restartButton.click();
-      }
     }
   };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi";
+import CustomizedTables from './CustomizedTables.tsx';
 function App() {
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
@@ -69,6 +70,7 @@ console.log("---- do connect wallet ----");
       </div>
 
       <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
+      <CustomizedTables/>
     </>
   )
 }

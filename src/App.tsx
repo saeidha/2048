@@ -61,13 +61,13 @@ console.log("---- do connect wallet ----");
   };
   return (
     <>
-      <div>
+      {/* <div>
         {account.status === 'connected' && (
           <button type="button" onClick={() => disconnect()}>
             Disconnect
           </button>
         )}
-      </div>
+      </div> */}
 
       <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
       <CustomizedTables/>

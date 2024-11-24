@@ -15,7 +15,7 @@ function App() {
 
   const [refreshTrigger, setRefreshTrigger] = useState(0); // State to trigger refresh
   const [players, setPlayers] = useState<Player[]>([]);
-  const contractAddress = import.meta.env.VITE_PAY_CONTRACT_ADDREESS;
+  const contractAddress = "0xd42024D7F424c18D2C0De50DC1681946Cb5Bb7E0";
   type Player = {
     name: string;
     score: number;

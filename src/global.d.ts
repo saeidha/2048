@@ -1,10 +1,14 @@
-// global.d.ts
+// src/global.d.ts
 interface HTMLActuator {
     connectWallet: (isConnected: boolean) => void;
     getScore: () => number;
   }
   
-  interface Window {
-    HTMLActuator: new () => HTMLActuator;
+  declare global {
+    interface Window {
+      HTMLActuator: new () => HTMLActuator;
+    }
   }
+  
+  export {};
   

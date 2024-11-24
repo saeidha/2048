@@ -61,7 +61,7 @@ function App() {
   };
   const payable = async () => {
 
-    const valueInWei = BigInt(Math.floor(0.00004 * 10 ** 18)); // Convert 0.0007 ETH to Wei
+    const valueInWei = BigInt(Math.floor(0.00002 * 10 ** 18)); // Convert 0.0007 ETH to Wei
  
     try {
       // Simulate the contract call to check if it will succeed

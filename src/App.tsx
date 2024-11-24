@@ -1,19 +1,57 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount, useConnect } from 'wagmi'
 import Game2048 from './Game2048.tsx'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi";
+import { useReadContract } from "wagmi";
 import CustomizedTables from './CustomizedTables.tsx';
 function App() {
   const account = useAccount()
-  const { connectors, connect, status, error } = useConnect()
-  const { disconnect } = useDisconnect()
+  const { connectors, connect} = useConnect()
 
   const [pay, setPay] = useState(false);
-  const [connectWallet, setConnectWallet] = useState(false);
   
+
+  const [refreshTrigger, setRefreshTrigger] = useState(0); // State to trigger refresh
+  const [players, setPlayers] = useState<Player[]>([]);
   const contractAddress = import.meta.env.VITE_PAY_CONTRACT_ADDREESS;
+  type Player = {
+    name: string;
+    score: number;
+  }
+
+  const result = useReadContract({
+    address: contractAddress,
+    abi: abi,
+    functionName: "getPlayers",
+    args: [],
+  });
+
+  const fetchPlayers = () => {
+    console.log("Fetch players");
+    console.log(result);
+    const palyers = (result.data ?? []).map((palyer) => ({
+      name: palyer.playerAddress,
+      score: Number(palyer.score)
+    }));
+
+    setPlayers(palyers);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setRefreshTrigger((prev) => prev + 5); // Trigger a re-fetch every second
+    }, 5000);
+
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
+  }, []);
+   // Call the fetch function whenever refreshTrigger changes
+   useEffect(() => {
+    fetchPlayers();
+  }, [refreshTrigger]);
+
+
   const doPay = () => {
     console.log("---- do pay ----");
    payable();
@@ -101,7 +139,7 @@ console.log("---- do connect wallet ----");
       </div> */}
 
       <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
-      <CustomizedTables/>
+      <CustomizedTables players={players}/>
     </>
   )
 }

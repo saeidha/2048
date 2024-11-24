@@ -27,22 +27,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(
-    name: string,
-    score: number
-) {
-    return { name, score };
-}
+type Player = {
+    name: string;
+    score: number;
+  }
 
-const rows = [
-    createData('Frozen yoghurt', 159),
-    createData('Ice cream sandwich', 237),
-    createData('Eclair', 262),
-    createData('Cupcake', 305),
-    createData('Gingerbread', 356),
-];
 
-export default function CustomizedTables() {
+interface CustomizedTablesProps {
+    players: Player[]; // Define the shape of the items prop
+  }
+
+export default function CustomizedTables(palyers: CustomizedTablesProps) {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20 }}>
             <TableContainer component={Paper} sx={{ width: 500 }}>
@@ -54,7 +49,7 @@ export default function CustomizedTables() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {palyers.players.map((row) => (
                             <StyledTableRow key={row.name}>
                                 <StyledTableCell component="th" scope="row">
                                     {row.name}

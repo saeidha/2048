@@ -13,6 +13,7 @@ function App() {
   const [pay, setPay] = useState(false);
   const [connectWallet, setConnectWallet] = useState(false);
   
+  const contractAddress = import.meta.env.VITE_PAY_CONTRACT_ADDREESS;
   const doPay = () => {
     console.log("---- do pay ----");
    payable();
@@ -25,7 +26,7 @@ function App() {
       // Simulate the contract call to check if it will succeed
       const { request } = await simulateContract(config, {
         abi,
-        address: import.meta.env.VITE_PAY_CONTRACT_ADDREESS,
+        address: contractAddress,
         functionName: "pay",
         args: [], // Add any necessary arguments for the 'pay' function here
         value: valueInWei,
@@ -55,9 +56,39 @@ console.log("---- do connect wallet ----");
     ))
   };
 
+  const submitYourScore = async (score: number) => {
+
+    if (!account) {
+      console.error("No account connected");
+      return;
+    }
+
+    try {
+
+      const { request } = await simulateContract(config, {
+        abi,
+        address: contractAddress,
+        functionName: "submitScore",
+        args: [BigInt(score)],
+      });
+
+      // Proceed to write the contract if simulation succeeded
+      console.log("Simulation succeeded, proceeding with transaction.");
+      const hash = await writeContract(config, request);
+
+      // Optionally, you can wait for the transaction receipt if needed
+      console.log("Transaction sent, hash:", hash);
+      
+      // Show success modal or notification if needed
+    } catch (error) {
+      console.error("Error writing contract:", error);
+    }
+  };
+
 
   const handleSubmitScore = (score: number) => {
-
+    console.log("---- submit score: " + score + " ----");
+    submitYourScore(score);
   };
   return (
     <>

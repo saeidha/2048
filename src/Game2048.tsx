@@ -67,6 +67,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
 
   useEffect(() => {
     if (shouldPlay) {
+      console.log("Starting new game");
       startNewGame();
     }
   }, [shouldPlay]);
@@ -99,9 +100,13 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
   return (
     <div className="container">
       <a className="restart-button-action" id="restart-button"></a>
+      
       <div className="heading">
+      <img className="logo" src="/logo.png" alt="logo" />
         <h1 className="title">Linea 2048</h1>
-        <div className="scores-container">
+      </div>
+      <div>
+      <div className="scores-container">
           <div className="score-container">0</div>
           {/* <div className="best-container">0</div> */}
         </div>

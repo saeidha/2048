@@ -31,18 +31,21 @@ function App() {
   const fetchPlayers = () => {
     console.log("Fetch players");
     console.log(result);
-    const palyers = (result.data ?? []).map((palyer) => ({
+    var palye = (result.data ?? []).map((palyer) => ({
       name: palyer.playerAddress,
       score: Number(palyer.score)
     }));
 
-    setPlayers(palyers);
+    palye = palye.sort((a, b) => b.score - a.score);
+
+
+    setPlayers(palye);
   };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setRefreshTrigger((prev) => prev + 5); // Trigger a re-fetch every second
-    }, 5000);
+      setRefreshTrigger((prev) => prev + 2); // Trigger a re-fetch every second
+    }, 2000);
 
     return () => clearInterval(intervalId); // Cleanup interval on unmount
   }, []);

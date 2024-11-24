@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./2048/style/main.css"; // Adjust the path
 import { useAccount } from 'wagmi';
 import "./Game2048.css"; // Adjust the path
@@ -18,7 +18,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
   const account = useAccount();
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
   const scriptElements: HTMLScriptElement[] = [];
-  // const htmlActuatorRef = useRef<HTMLActuator | null>(null);
+  const htmlActuatorRef = useRef<HTMLActuator | null>(null);
 
   useEffect(() => {
     // Load game scripts dynamically
@@ -50,7 +50,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     Promise.all(loadScripts).then(() => {
       setScriptsLoaded(true);
       console.log("All scripts loaded");
-      // htmlActuatorRef.current = new window.HTMLActuator();
+      htmlActuatorRef.current = new (window as any).HTMLActuator();
 
     }).catch((error) => {
       console.error("Error loading scripts", error);
@@ -68,9 +68,9 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     if (scriptsLoaded) {
       console.log("All scripts loaded");
       console.log("account.status: " + account.status);
-      // if (htmlActuatorRef.current) {
-      //   htmlActuatorRef.current.connectWallet(account.status === 'connected');      
-      // }
+      if (htmlActuatorRef.current) {
+        htmlActuatorRef.current.connectWallet(account.status === 'connected');
+      }
     }
   });
 

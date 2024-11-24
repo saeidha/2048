@@ -9,10 +9,10 @@ interface Game2048Props {
   shouldPlay: boolean;
 }
 
-interface HTMLActuator {
-  connectWallet: (isConnected: boolean) => void;
-  getScore: () => number;
-}
+// interface HTMLActuator {
+//   connectWallet: (isConnected: boolean) => void;
+//   getScore: () => number;
+// }
 const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, submitScore
 }) => {
   const account = useAccount();
@@ -50,7 +50,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     Promise.all(loadScripts).then(() => {
       setScriptsLoaded(true);
       console.log("All scripts loaded");
-      htmlActuatorRef.current = new (window as any).HTMLActuator();
+      htmlActuatorRef.current = new window.HTMLActuator();
 
     }).catch((error) => {
       console.error("Error loading scripts", error);
@@ -69,8 +69,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
       console.log("All scripts loaded");
       console.log("account.status: " + account.status);
       if (htmlActuatorRef.current) {
-        htmlActuatorRef.current.connectWallet(account.status === 'connected');
-      }
+        htmlActuatorRef.current.connectWallet(account.status === 'connected');      }
     }
   });
 

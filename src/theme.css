@@ -1,15 +1,234 @@
+/* --- CSS Variables (Adjust based on your theme.css if preferred) --- */
 :root {
-  --primary-color: #FFA500; /* Orange */
-  --background-color: #faf8ef;
-  --text-color: #776e65;
+  --primary-color: #60c3e7; /* Linea Light Blue-ish */
+  --secondary-color: #1a1a1a; /* Dark Gray */
+  --linea-purple: #9F7AEA;
+  --bg-light: #ffffff;
+  --bg-alt: #f8f9fa; /* Light Gray background */
+  --text-dark: #2d3748;
+  --text-light: #718096;
+  --spacing-unit: 1rem;
+  --container-width: 1100px;
+  --border-radius: 12px;
 }
 
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+/* --- General Resets & Typography --- */
+.landing-page-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-a {
-  color: var(--primary-color);
+h1, h2, h3 {
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+p { margin-bottom: 1rem; }
+
+.lead-text { font-size: 1.15rem; color: var(--text-light); }
+.text-center { text-align: center; }
+.highlight { color: var(--primary-color); }
+.linea-purple { color: var(--linea-purple); }
+.mb-2 { margin-bottom: 2rem; }
+.mb-3 { margin-bottom: 3rem; }
+.mt-2 { margin-top: 2rem; }
+
+/* --- Layout Helpers --- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-unit);
+}
+
+.content-section { padding: 5rem 0; }
+.alt-bg { background-color: var(--bg-alt); border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.center-text-block { max-width: 700px; margin: 0 auto; text-align: center; }
+
+/* --- Hero Section --- */
+.hero-section {
+  position: relative;
+  /* Ensure this height is enough to show banner content */
+  min-height: 600px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white; /* Assuming dark banner, change if banner is light */
+  padding: 4rem 0;
+}
+
+.hero-background-image {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.hero-background-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark overlay to ensure text readability over banner */
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6); 
+  z-index: -1;
+}
+
+.hero-content { z-index: 1; position: relative; }
+
+.logo-container { margin-bottom: 2rem; }
+.brand-logo { height: 80px; width: auto; }
+
+.hero-title { 
+  font-size: 3.5rem; 
+  /* Text shadow for better readability on banner */
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  max-width: 700px;
+  margin: 0 auto 2.5rem auto;
+  opacity: 0.9;
+}
+
+/* --- Buttons --- */
+.cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: white;
+  color: white;
+}
+/* If hero bg is light, change secondary btn color */
+/* .hero-section.light-mode .btn-secondary { border-color: var(--secondary-color); color: var(--secondary-color); } */
+
+.btn-large { padding: 1rem 3rem; font-size: 1.2rem; }
+
+
+/* --- Features Lists --- */
+.feature-list { list-style: none; padding: 0; }
+.feature-list li {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: flex-start;
+}
+/* Selects the emoji/icon */
+.feature-list li strong:first-child { 
+    margin-right: 10px; 
+    font-size: 1.2rem;
+}
+
+
+/* --- Feature Cards Grid (Social Section) --- */
+.feature-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: var(--bg-light);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+
+/* --- How to Play Steps --- */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.step-card {
+    background: var(--bg-light);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #eee;
+    position: relative;
+}
+
+.step-number {
+    background: var(--primary-color);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 1.5rem auto;
+}
+
+
+/* --- Footer --- */
+.footer-section { padding: 4rem 0; }
+.footer-links { margin-top: 2rem; margin-bottom: 1rem; }
+.footer-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-weight: 600;
+}
+.footer-links a:hover { color: var(--primary-color); }
+.separator { color: var(--text-light); opacity: 0.5; }
+.copyright { font-size: 0.9rem; color: var(--text-light); }
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  .hero-title { font-size: 2.5rem; }
+  .hero-section { min-height: 500px; padding: 6rem 0; }
+  
+  .two-column-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center;}
+  .reverse-mobile { display: flex; flex-direction: column-reverse; }
+  .feature-list li { justify-content: center; }
+  
+  .cta-group { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
 }

@@ -1,0 +1,154 @@
+/* --- theme.css additions for Policy Pages --- */
+
+:root {
+    /* Ensure these match your main landing page variables */
+    --primary-color: #60c3e7; 
+    --secondary-color: #1a1a1a;
+    --text-dark: #2d3748;
+    --text-light: #718096;
+    --bg-light: #ffffff;
+    --bg-alt: #f8f9fa;
+    --border-radius: 12px;
+  }
+  
+  body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      line-height: 1.7;
+      margin: 0;
+      background-color: var(--bg-alt); /* Slight off-white background for the whole page */
+  }
+  
+  /* Utility Classes */
+  .container {
+      width: 100%;
+      max-width: 900px; /* Narrower container for readable text */
+      margin: 0 auto;
+      padding: 0 1rem;
+  }
+  .mb-3 { margin-bottom: 3rem; }
+  .alt-bg { background-color: var(--bg-light); border-top: 1px solid #eee; }
+  
+  
+  /* --- Policy Page Specific Styles --- */
+  
+  .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Ensures footer stays at bottom on short pages */
+  }
+  
+  /* Header */
+  .policy-header {
+      background-color: var(--secondary-color);
+      padding: 1.5rem 0;
+      text-align: center;
+      margin-bottom: 3rem;
+  }
+  
+  .policy-logo {
+      height: 60px;
+      width: auto;
+  }
+  
+  /* Main Content Container */
+  .policy-container {
+      flex: 1; /* Makes main content fill available space */
+      background-color: var(--bg-light);
+      padding: 3rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  
+  /* Typography */
+  .policy-content h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+  }
+  
+  .policy-content h2 {
+      font-size: 1.75rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+  }
+  
+  .policy-content h3 {
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--secondary-color);
+  }
+  
+  .policy-content p, .policy-content li {
+      color: #4a5568;
+      margin-bottom: 1rem;
+  }
+  
+  .lead-text {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      font-style: italic;
+      margin-bottom: 2rem;
+  }
+  
+  .policy-content ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+  }
+  
+  .policy-content li {
+      margin-bottom: 0.5rem;
+  }
+  
+  /* Special Blockchain Notice Box */
+  .blockchain-notice {
+      background-color: rgba(96, 195, 231, 0.1); /* Subtle primary color tint */
+      border-left: 4px solid var(--primary-color);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  }
+  .blockchain-notice h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+  }
+  
+  
+  /* Footer */
+  .policy-footer {
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: auto; /* Pushes footer to bottom */
+  }
+  
+  .policy-footer .copyright {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin: 0;
+  }
+  
+  .policy-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+  }
+  
+  .policy-footer a:hover {
+      text-decoration: underline;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+      .policy-container {
+          padding: 1.5rem;
+          margin-top: -1rem; /* Pull closer to header on mobile */
+          border-radius: 0; /* Full width on mobile */
+      }
+      .policy-content h1 { font-size: 2rem; }
+      .policy-content h2 { font-size: 1.5rem; }
+  }

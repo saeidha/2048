@@ -1,18 +1,100 @@
-.before-submit-game{
-    padding: 20px;
+/* --- CSS Variables (Adjust based on your theme.css if preferred) --- */
+:root {
+  --primary-color: #60c3e7; /* Linea Light Blue-ish */
+  --secondary-color: #1a1a1a; /* Dark Gray */
+  --linea-purple: #9F7AEA;
+  --bg-light: #ffffff;
+  --bg-alt: #f8f9fa; /* Light Gray background */
+  --text-dark: #2d3748;
+  --text-light: #718096;
+  --spacing-unit: 1rem;
+  --container-width: 1200px; /* Increased slightly for better landscape use */
+  --border-radius: 12px;
 }
-.submit-game a{
-    background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  display: block;
+
+/* --- General Resets & Typography --- */
+.landing-page-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+p { margin-bottom: 1rem; }
+
+.lead-text { font-size: 1.15rem; color: var(--text-light); }
+.text-center { text-align: center; }
+.highlight { color: var(--primary-color); }
+.linea-purple { color: var(--linea-purple); }
+.mb-2 { margin-bottom: 2rem; }
+.mb-3 { margin-bottom: 3rem; }
+.mt-2 { margin-top: 2rem; }
+
+/* --- Layout Helpers --- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-unit);
+}
+
+.content-section { padding: 4rem 0; } /* Slightly reduced vertical padding for tighter landscape feel */
+.alt-bg { background-color: var(--bg-alt); border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.center-text-block { max-width: 700px; margin: 0 auto; text-align: center; }
+
+/* --- Hero Section (FIXED SIZE HERE) --- */
+.hero-section {
+  position: relative;
+  /* Changed from 600px to 480px to fix "too much size" */
+  min-height: 480px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  color: white;
+  /* Reduced padding to tighten the section */
+  padding: 2rem 0;
 }
-.logo {
-  width: 150px;
-  height: 150px;
+
+.hero-background-image {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -2;
+  overflow: hidden;
 }
+
+.hero-background-image img {
+  width: 100%;
+  height: 100%;
+  /* Ensure the image covers the area without stretching, cropping if necessary */
+  object-fit: cover; 
+  /* Optional: focus on the center of the banner image */
+  object-position: center; 
+}
+
+/* Dark overlay to ensure text readability over banner */
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Slightly reduced opacity so banner shows more */
+  z-index: -1;
+}
+
+.hero-content { z-index: 1; position: relative; }

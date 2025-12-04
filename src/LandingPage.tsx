@@ -1,9 +1,5 @@
-import React from 'react';
-// Assuming Header is your navigation bar. If not needed, you can remove it.
-import Header from './Header'; 
-import './Game2048.css';
-// theme.css is likely imported in index.js, but if needed here, keep it.
-// import './theme.css'; 
+
+import './theme.css'; 
 
 const LandingPage = () => {
   const APP_URL = "https://app.2048game.site/";
@@ -26,6 +22,7 @@ const LandingPage = () => {
           <div className="logo-container">
             <img src="/logo.png" alt="2048 Game Logo" className="brand-logo" />
           </div>
+          {/* Note: The highlight span keeps the Linea blue color for emphasis */}
           <h1 className="hero-title">Merge to 2048. <span className="highlight">Prove it on-chain.</span></h1>
           <h2 className="hero-subtitle">
             The classic 2048 gameplay you know, supercharged by Linea zkEVM. 
@@ -33,8 +30,8 @@ const LandingPage = () => {
             Ultra-low gas, high-stakes bragging rights.
           </h2>
           <div className="cta-group">
+            {/* Removed Leaderboard button, only Launch App remains */}
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary">LAUNCH APP</a>
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">VIEW GLOBAL LEADERBOARD</a>
           </div>
         </div>
       </section>
@@ -127,6 +124,7 @@ const LandingPage = () => {
         <div className="container text-center">
           <h2>Ready to test your mind against the chain?</h2>
           <div className="cta-group mb-3 mt-2">
+             {/* Note: The footer button keeps the original primary Linea color */}
              <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-large">LAUNCH APP</a>
           </div>
           

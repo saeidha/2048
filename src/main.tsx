@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom/client'
 import { WagmiProvider } from 'wagmi'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import App from './App.tsx'
+import LandingPage from './LandingPage.tsx';
+import GamePage from './GamePage.tsx';
 import SupportPage from './support.tsx';
 import PrivacyPolicy from './PrivacyPolicy.tsx';
 import { config } from './wagmi.ts'
@@ -19,7 +20,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/app" element={<GamePage />} />
             <Route path="/support" element={<SupportPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>

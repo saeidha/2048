@@ -6,7 +6,6 @@ import { abi } from "./abi.ts";
 import { config } from "./wagmi";
 import { useReadContract } from "wagmi";
 import CustomizedTables from './CustomizedTables.tsx';
-import Header from './Header.tsx';
 import './theme.css';
 
 function GamePage() {
@@ -136,7 +135,7 @@ console.log("---- do connect wallet ----");
   };
   return (
     <>
-      <Header />
+      
       {/* <div>
         {account.status === 'connected' && (
           <button type="button" onClick={() => disconnect()}>

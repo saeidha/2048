@@ -98,3 +98,33 @@ p { margin-bottom: 1rem; }
 }
 
 .hero-content { z-index: 1; position: relative; }
+
+.logo{
+  height: 60px;
+  width: auto;
+}
+
+.game-page-header {
+  padding: 1rem 0;
+  /* alt-bg class already handles background color and borders */
+}
+
+.header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+  gap: 1rem; /* Space between logo and text */
+}
+
+/* Specific logo size for this header */
+.header-logo {
+  height: 50px; 
+  width: auto;
+}
+
+/* Specific title style for this header */
+.header-title {
+  margin: 0; /* Remove default h1 margins */
+  font-size: 2rem;
+  color: var(--secondary-color); /* Use the dark gray theme color */
+}

@@ -110,10 +110,12 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     <div className="container">
       <a className="restart-button-action" id="restart-button"></a>
       
-      <div className="heading">
-      <img className="logo" src="/logo.png" alt="logo" />
-        <h1 className="title">Linea 2048</h1>
-      </div>
+      <header className="game-page-header alt-bg">
+        <div className="container header-flex">
+          <img src="/logo.png" alt="Linea 2048 Logo" className="header-logo" />
+          <h1 className="header-title">Linea 2048</h1>
+        </div>
+      </header>
       <div>
       <div className="scores-container">
           <div className="score-container">0</div>

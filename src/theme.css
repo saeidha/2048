@@ -1,0 +1,15 @@
+:root {
+  --primary-color: #FFA500; /* Orange */
+  --background-color: #faf8ef;
+  --text-color: #776e65;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+  color: var(--primary-color);
+}

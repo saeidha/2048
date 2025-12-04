@@ -1,10 +1,12 @@
 
 import './Game2048.css';
+import Header from './Header';
+import './theme.css';
 
 const LandingPage = () => {
   return (
-    <div style={{ textAlign: 'center', paddingTop: '50px' }}>
-      <img src="/logo.png" alt="Logo" className="logo" />
+    <div style={{ textAlign: 'center' }}>
+      <Header />
       <h1>Welcome to Linea 2048</h1>
       <p>The classic 2048 game, on the Linea blockchain.</p>
       <div className="submit-game">

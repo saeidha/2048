@@ -1,10 +1,9 @@
 import { useAccount, useConnect } from 'wagmi'
 import Game2048 from './Game2048.tsx'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi";
-import { useReadContract } from "wagmi";
 import CustomizedTables from './CustomizedTables.tsx';
 function App() {
   const account = useAccount()
@@ -13,14 +12,14 @@ function App() {
   const [pay, setPay] = useState(false);
   
 
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // State to trigger refresh
-  const [players, setPlayers] = useState<Player[]>([]);
-  const contractAddress = "0xd42024D7F424c18D2C0De50DC1681946Cb5Bb7E0";
+  const [players] = useState<Player[]>([]);
+  const contractAddress = "0x8D8883b1CA4f2fbcEAF505C854e5294B1a1bf98f";
   type Player = {
     name: string;
     score: number;
   }
 
+  /*
   const result = useReadContract({
     address: contractAddress,
     abi: abi,
@@ -53,6 +52,7 @@ function App() {
    useEffect(() => {
     fetchPlayers();
   }, [refreshTrigger]);
+  */
 
 
   const doPay = () => {
@@ -61,7 +61,7 @@ function App() {
   };
   const payable = async () => {
 
-    const valueInWei = BigInt(Math.floor(0.00002 * 10 ** 18)); // Convert 0.0007 ETH to Wei
+    const valueInWei = BigInt(1000 * 10 ** 9); // 1000 gwei
  
     try {
       // Simulate the contract call to check if it will succeed
@@ -109,8 +109,9 @@ console.log("---- do connect wallet ----");
       const { request } = await simulateContract(config, {
         abi,
         address: contractAddress,
-        functionName: "submitScore",
+        functionName: "registerScore",
         args: [BigInt(score)],
+        value: BigInt(1000 * 10 ** 9), // 1000 gwei
       });
 
       // Proceed to write the contract if simulation succeeded

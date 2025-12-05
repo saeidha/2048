@@ -1,11 +1,10 @@
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { linea } from 'wagmi/chains';
 import Game2048 from './Game2048.tsx';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi.ts";
-import { useReadContract } from "wagmi";
 import CustomizedTables from './CustomizedTables.tsx';
 import './theme.css';
 
@@ -16,14 +15,14 @@ function GamePage() {
 
   const [pay, setPay] = useState(false);
   
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // State to trigger refresh
-  const [players, setPlayers] = useState<Player[]>([]);
-  const contractAddress = "0x8D8883b1CA4f2fbcEaf505C854e5294B1a1bf98f";
+  const [players] = useState<Player[]>([]);
+  const contractAddress = "0x8D8883b1CA4f2fbcEAF505C854e5294B1a1bf98f";
   type Player = {
     name: string;
     score: number;
   }
 
+  /*
   const result = useReadContract({
     address: contractAddress,
     abi: abi,
@@ -54,6 +53,7 @@ function GamePage() {
    useEffect(() => {
     fetchPlayers();
   }, [refreshTrigger]);
+  */
 
 
   const doStartGame = () => {
@@ -75,7 +75,7 @@ function GamePage() {
 
   const startGame = async () => {
 
-    const valueInWei = BigInt(Math.floor(0.000001 * 10 ** 18)); // Convert 0.000001 ETH to Wei
+    const valueInWei = BigInt(1000 * 10 ** 9); // 1000 gwei
  
     try {
       // Simulate the contract call to check if it will succeed
@@ -125,6 +125,7 @@ function GamePage() {
         address: contractAddress,
         functionName: "registerScore",
         args: [BigInt(score)],
+        value: BigInt(1000 * 10 ** 9), // 1000 gwei
       });
 
       // Proceed to write the contract if simulation succeeded

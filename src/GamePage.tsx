@@ -1,23 +1,24 @@
-import { useAccount, useConnect } from 'wagmi'
-import Game2048 from './Game2048.tsx'
+import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { linea } from 'wagmi/chains';
+import Game2048 from './Game2048.tsx';
 import { useEffect, useState } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
-import { config } from "./wagmi";
+import { config } from "./wagmi.ts";
 import { useReadContract } from "wagmi";
 import CustomizedTables from './CustomizedTables.tsx';
 import './theme.css';
 
 function GamePage() {
-  const account = useAccount()
-  const { connectors, connect} = useConnect()
+  const account = useAccount();
+  const { connectors, connect } = useConnect();
+  const { switchChain } = useSwitchChain();
 
   const [pay, setPay] = useState(false);
   
-
   const [refreshTrigger, setRefreshTrigger] = useState(0); // State to trigger refresh
   const [players, setPlayers] = useState<Player[]>([]);
-  const contractAddress = "0xd42024D7F424c18D2C0De50DC1681946Cb5Bb7E0";
+  const contractAddress = "0x8D8883b1CA4f2fbcEaf505C854e5294B1a1bf98f";
   type Player = {
     name: string;
     score: number;
@@ -31,8 +32,6 @@ function GamePage() {
   });
 
   const fetchPlayers = () => {
-    console.log("Fetch players");
-    console.log(result);
     var palye = (result.data ?? []).map((palyer) => ({
       name: palyer.playerAddress,
       score: Number(palyer.score)
@@ -57,13 +56,26 @@ function GamePage() {
   }, [refreshTrigger]);
 
 
-  const doPay = () => {
-    console.log("---- do pay ----");
-   payable();
+  const doStartGame = () => {
+    console.log("---- do start game ----");
+    if (account.chainId !== linea.id) {
+      switchChain({ chainId: linea.id }, {
+        onSuccess: () => {
+          console.log("Switched to Linea network");
+          startGame();
+        },
+        onError: (error) => {
+          console.error("Failed to switch chain", error);
+        }
+      });
+    } else {
+      startGame();
+    }
   };
-  const payable = async () => {
 
-    const valueInWei = BigInt(Math.floor(0.00002 * 10 ** 18)); // Convert 0.0007 ETH to Wei
+  const startGame = async () => {
+
+    const valueInWei = BigInt(Math.floor(0.000001 * 10 ** 18)); // Convert 0.000001 ETH to Wei
  
     try {
       // Simulate the contract call to check if it will succeed
@@ -90,7 +102,7 @@ function GamePage() {
   };
 
   const doConnectWallet = () => {
-console.log("---- do connect wallet ----");
+    console.log("---- do connect wallet ----");
     connectors.map((connector) => (
       connector.name === "MetaMask" && (
         console.log("find metamask"),
@@ -111,7 +123,7 @@ console.log("---- do connect wallet ----");
       const { request } = await simulateContract(config, {
         abi,
         address: contractAddress,
-        functionName: "submitScore",
+        functionName: "registerScore",
         args: [BigInt(score)],
       });
 
@@ -135,16 +147,7 @@ console.log("---- do connect wallet ----");
   };
   return (
     <>
-      
-      {/* <div>
-        {account.status === 'connected' && (
-          <button type="button" onClick={() => disconnect()}>
-            Disconnect
-          </button>
-        )}
-      </div> */}
-
-      <Game2048 doPay={doPay} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
+      <Game2048 doPay={doStartGame} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>
       <CustomizedTables players={players}/>
     </>
   )

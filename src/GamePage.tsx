@@ -1,7 +1,7 @@
-import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain, useReadContract } from 'wagmi';
 import { linea } from 'wagmi/chains';
 import Game2048 from './Game2048.tsx';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi.ts";
@@ -14,46 +14,71 @@ function GamePage() {
   const { switchChain } = useSwitchChain();
 
   const [pay, setPay] = useState(false);
-  
-  const [players] = useState<Player[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const contractAddress = "0x8D8883b1CA4f2fbcEAF505C854e5294B1a1bf98f";
+  
   type Player = {
     name: string;
     score: number;
   }
 
-  /*
-  const result = useReadContract({
-    address: contractAddress,
-    abi: abi,
-    functionName: "getPlayers",
-    args: [],
-  });
-
-  const fetchPlayers = () => {
-    var palye = (result.data ?? []).map((palyer) => ({
-      name: palyer.playerAddress,
-      score: Number(palyer.score)
-    }));
-
-    palye = palye.sort((a, b) => b.score - a.score);
-
-
-    setPlayers(palye);
-  };
+  // Fetch multiple player entries from the contract
+  // Since we don't have a getPlayers function, we'll try to read individual players
+  // We'll attempt to read players at indices 0-99 and filter out invalid ones
+  const playerIndices = Array.from({ length: 100 }, (_, i) => i);
+  
+  const playerQueries = playerIndices.map(index => 
+    useReadContract({
+      address: contractAddress,
+      abi: abi,
+      functionName: "players",
+      args: [BigInt(index)],
+    })
+  );
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRefreshTrigger((prev) => prev + 2); // Trigger a re-fetch every second
-    }, 2000);
+    // Fetch and process players
+    const fetchedPlayers: Player[] = [];
+    
+    playerQueries.forEach((query) => {
+      if (query.data && Array.isArray(query.data) && query.data.length >= 2) {
+        const playerAddress = query.data[0] as string;
+        const score = Number(query.data[1]);
+        
+        // Only add valid players (non-zero address and score)
+        if (playerAddress && playerAddress !== '0x0000000000000000000000000000000000000000' && score > 0) {
+          // Check if this address already exists
+          const existingPlayerIndex = fetchedPlayers.findIndex(p => p.name === playerAddress);
+          
+          if (existingPlayerIndex >= 0) {
+            // Update if this score is higher
+            if (score > fetchedPlayers[existingPlayerIndex].score) {
+              fetchedPlayers[existingPlayerIndex].score = score;
+            }
+          } else {
+            fetchedPlayers.push({
+              name: playerAddress,
+              score: score
+            });
+          }
+        }
+      }
+    });
 
-    return () => clearInterval(intervalId); // Cleanup interval on unmount
+    // Sort by score and take top 10
+    const sortedPlayers = fetchedPlayers.sort((a, b) => b.score - a.score).slice(0, 10);
+    setPlayers(sortedPlayers);
+  }, [refreshTrigger, ...playerQueries.map(q => q.data)]);
+
+  // Auto-refresh every 5 seconds
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setRefreshTrigger((prev) => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
-   // Call the fetch function whenever refreshTrigger changes
-   useEffect(() => {
-    fetchPlayers();
-  }, [refreshTrigger]);
-  */
 
 
   const doStartGame = () => {

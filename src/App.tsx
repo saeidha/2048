@@ -88,13 +88,14 @@ function App() {
   };
 
   const doConnectWallet = () => {
-console.log("---- do connect wallet ----");
-    connectors.map((connector) => (
-      connector.name === "MetaMask" && (
-        console.log("find metamask"),
-        connect({ connector })
-      )
-    ))
+    console.log("---- do connect wallet ----");
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    if (connector) {
+      console.log("find metamask");
+      connect({ connector });
+    } else {
+      console.log("MetaMask connector not found");
+    }
   };
 
   const submitYourScore = async (score: number) => {

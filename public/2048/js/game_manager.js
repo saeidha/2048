@@ -43,6 +43,11 @@ GameManager.prototype.setup = function () {
     this.over        = previousState.over;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
+
+    // Check if the game is actually over (in case the state was saved incorrectly)
+    if (!this.over && !this.movesAvailable()) {
+      this.over = true;
+    }
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
@@ -187,6 +192,12 @@ GameManager.prototype.move = function (direction) {
     }
 
     this.actuate();
+  } else {
+    // If no move was made, check if the game is over (user stuck)
+    if (!this.movesAvailable()) {
+      this.over = true;
+      this.actuate();
+    }
   }
 };
 

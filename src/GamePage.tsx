@@ -1,7 +1,7 @@
 import { useAccount, useConnect, useSwitchChain, useReadContract } from 'wagmi';
 import { linea } from 'wagmi/chains';
 import Game2048 from './Game2048.tsx';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { simulateContract, writeContract } from "@wagmi/core";
 import { abi } from "./abi.ts";
 import { config } from "./wagmi.ts";
@@ -81,7 +81,19 @@ function GamePage() {
   }, []);
 
 
-  const doStartGame = () => {
+  // Wrap functions in useCallback to prevent re-renders of Game2048
+  const doConnectWallet = useCallback(() => {
+    console.log("---- do connect wallet ----");
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    if (connector) {
+      console.log("find metamask");
+      connect({ connector });
+    } else {
+      console.log("MetaMask connector not found");
+    }
+  }, [connectors, connect]);
+
+  const doStartGame = useCallback(() => {
     console.log("---- do start game ----");
     if (account.chainId !== linea.id) {
       switchChain({ chainId: linea.id }, {
@@ -96,82 +108,52 @@ function GamePage() {
     } else {
       startGame();
     }
-  };
+  }, [account.chainId, switchChain, linea.id]); // Note: startGame is used inside, check dependencies
 
   const startGame = async () => {
-
     const valueInWei = BigInt(1000 * 10 ** 9); // 1000 gwei
- 
     try {
-      // Simulate the contract call to check if it will succeed
       const { request } = await simulateContract(config, {
         abi,
         address: contractAddress,
         functionName: "pay",
-        args: [], // Add any necessary arguments for the 'pay' function here
+        args: [],
         value: valueInWei,
       });
-
-      // Proceed to write the contract if simulation succeeded
       console.log("Simulation succeeded, proceeding with transaction.");
-
       const hash = await writeContract(config, request);
-
-      // Optionally, you can wait for the transaction receipt if needed
       console.log("Transaction sent, hash:", hash);
       setPay(true);
     } catch (error) {
       console.error("Error writing contract:", error);
-      //setError("Transaction failed");
-    }
-  };
-
-  const doConnectWallet = () => {
-    console.log("---- do connect wallet ----");
-    const connector = connectors.find((c) => c.name === "MetaMask");
-    if (connector) {
-      console.log("find metamask");
-      connect({ connector });
-    } else {
-      console.log("MetaMask connector not found");
     }
   };
 
   const submitYourScore = async (score: number) => {
-
     if (!account) {
       console.error("No account connected");
       return;
     }
-
     try {
-
       const { request } = await simulateContract(config, {
         abi,
         address: contractAddress,
         functionName: "registerScore",
         args: [BigInt(score)],
-        value: BigInt(1000 * 10 ** 9), // 1000 gwei
+        value: BigInt(1000 * 10 ** 9),
       });
-
-      // Proceed to write the contract if simulation succeeded
       console.log("Simulation succeeded, proceeding with transaction.");
       const hash = await writeContract(config, request);
-
-      // Optionally, you can wait for the transaction receipt if needed
       console.log("Transaction sent, hash:", hash);
-      
-      // Show success modal or notification if needed
     } catch (error) {
       console.error("Error writing contract:", error);
     }
   };
 
-
-  const handleSubmitScore = (score: number) => {
+  const handleSubmitScore = useCallback((score: number) => {
     console.log("---- submit score: " + score + " ----");
     submitYourScore(score);
-  };
+  }, [account]); // Depend on account for submitYourScore check
   return (
     <>
       <Game2048 doPay={doStartGame} doConnectWallet={doConnectWallet} shouldPlay={pay} submitScore={handleSubmitScore}/>

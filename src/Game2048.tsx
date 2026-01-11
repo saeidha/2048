@@ -13,7 +13,7 @@ interface Game2048Props {
 //   connectWallet: (isConnected: boolean) => void;
 //   getScore: () => number;
 // }
-const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, submitScore
+const Game2048: React.FC<Game2048Props> = React.memo(({doPay, doConnectWallet, shouldPlay, submitScore
 }) => {
   const account = useAccount();
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
@@ -50,7 +50,13 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     Promise.all(loadScripts).then(() => {
       setScriptsLoaded(true);
       console.log("All scripts loaded");
-      htmlActuatorRef.current = new (window as any).HTMLActuator();
+      // Initial wallet status check
+      if (typeof window !== 'undefined' && (window as any).HTMLActuator) {
+        htmlActuatorRef.current = new (window as any).HTMLActuator();
+        if (htmlActuatorRef.current) {
+            htmlActuatorRef.current.connectWallet(account.status === 'connected');
+        }
+      }
 
     }).catch((error) => {
       console.error("Error loading scripts", error);
@@ -59,20 +65,19 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
     return () => {
       // Cleanup scripts on unmount
       scriptElements.forEach((script) => {
-        document.body.removeChild(script);
+        if (script.parentNode) {
+            script.parentNode.removeChild(script);
+        }
       });
     };
-  }, []);
+  }, []); // Only run once
 
   useEffect(() => {
-    if (scriptsLoaded) {
-      console.log("All scripts loaded");
-      console.log("account.status: " + account.status);
-      if (htmlActuatorRef.current) {
+    if (scriptsLoaded && htmlActuatorRef.current) {
+        // Sync wallet status without re-rendering everything
         htmlActuatorRef.current.connectWallet(account.status === 'connected');
-      }
     }
-  });
+  }, [account.status, scriptsLoaded]);
 
   useEffect(() => {
     if (shouldPlay) {
@@ -137,6 +142,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
           <p></p>
           <div className="lower">
             <a className="keep-playing-button">Keep going</a>
+            <a className="register-button" onClick={saveScore}>Register Score</a>
             <a className="retry-button" onClick={handleNewGame}>{account.status === 'connected' ? "New Game" : "Connect Wallet"}</a>
           </div>
         </div>
@@ -156,9 +162,7 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
 
       <div className="before-submit-game">
         </div>
-<div className="submit-game">
-<a onClick={saveScore}>Register your score</a>
-</div>
+
 
       <p className="game-explanation">
         <strong className="important">How to play:</strong> Use your{" "}
@@ -167,6 +171,6 @@ const Game2048: React.FC<Game2048Props> = ({doPay, doConnectWallet, shouldPlay, 
       </p>
     </div>
   );
-};
+});
 
 export default Game2048;

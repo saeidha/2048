@@ -128,36 +128,3 @@ p { margin-bottom: 1rem; }
   font-size: 2rem;
   color: var(--secondary-color); /* Use the dark gray theme color */
 }
-
-/* Game Over Overlay Customizations */
-.game-container .game-message .register-button {
-  display: none;
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  cursor: pointer;
-}
-
-.game-container .game-message.game-over .register-button {
-  display: inline-block;
-}
-
-/* User wants: Register Score button and BELOW it New Game button */
-.game-container .game-message.game-over .lower {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.game-container .game-message.game-over .retry-button {
-  margin-left: 0 !important;
-}
-
-.game-container .game-message.game-over .register-button {
-  margin-left: 0 !important;
-}

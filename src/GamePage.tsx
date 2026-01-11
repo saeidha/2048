@@ -149,7 +149,7 @@ function GamePage() {
       const { request } = await simulateContract(config, {
         abi,
         address: contractAddress,
-        functionName: "registerScore",
+        functionName: "submitScore",
         args: [BigInt(score)],
         value: BigInt(1000 * 10 ** 9), // 1000 gwei
       });

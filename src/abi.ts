@@ -145,7 +145,7 @@ export const abi = [
         "type": "uint256"
       }
     ],
-    "name": "submitScore",
+    "name": "registerScore",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"

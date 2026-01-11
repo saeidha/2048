@@ -16,7 +16,7 @@ function GamePage() {
   const [pay, setPay] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const contractAddress = "0xd42024D7F424c18D2C0De50DC1681946Cb5Bb7E0";
+  const contractAddress = "0x8D8883b1CA4f2fbcEAF505C854e5294B1a1bf98f";
   
   type Player = {
     name: string;
